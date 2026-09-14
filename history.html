@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Problem History</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+        }
+
+        .problem {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 15px;
+            margin-top: 10px;
+            background: #1f4e79;
+        }
+
+        .back {
+            background: #6c757d;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .reported {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .progress {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .resolved {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .priority {
+            margin-top: 10px;
+            padding: 10px;
+            background: #eef5ff;
+            border-left: 5px solid #1f4e79;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>📋 My Problem History</h1>
+
+    <p>View Your Submitted Problems</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="box">
+
+        <h2>📋 Submitted Problems</h2>
+
+
+        <button onclick="loadHistory()">
+            🔄 Refresh History
+        </button>
+
+
+        <div id="history"></div>
+
+
+        <button
+            class="back"
+            onclick="goBack()"
+        >
+            ⬅️ Back to Student Portal
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* ============================= */
+/* LOAD HISTORY */
+/* ============================= */
+
+function loadHistory() {
+
+
+    var problems =
+        JSON.parse(
+            localStorage.getItem("problems")
+        ) || [];
+
+
+    var history =
+        document.getElementById("history");
+
+
+    history.innerHTML = "";
+
+
+    if (problems.length == 0) {
+
+        history.innerHTML =
+
+            "<div class='empty'>" +
+
+            "<h3>📭 No Problems Found</h3>" +
+
+            "<p>You have not submitted any problems yet.</p>" +
+
+            "</div>";
+
+        return;
+    }
+
+
+    for (
+        var i = problems.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+
+        var p = problems[i];
+
+
+        var status =
+            p.status || "Reported";
+
+
+        var priority =
+            p.priority || "Medium";
+
+
+        var statusClass =
+            "reported";
+
+
+        if (status == "In Progress") {
+
+            statusClass =
+                "progress";
+
+        }
+
+
+        if (status == "Resolved") {
+
+            statusClass =
+                "resolved";
+
+        }
+
+
+        history.innerHTML +=
+
+
+            "<div class='problem'>" +
+
+
+            "<h3>📝 " +
+            p.title +
+            "</h3>" +
+
+
+            "<p>" +
+
+            "<b>Problem ID:</b> " +
+
+            p.id +
+
+            "</p>" +
+
+
+            "<p>" +
+
+            "<b>Student:</b> " +
+
+            p.name +
+
+            "</p>" +
+
+
+            "<p>" +
+
+            "<b>Description:</b> " +
+
+            p.description +
+
+            "</p>" +
+
+
+            "<p>" +
+
+            "<b>Status:</b> " +
+
+            "<span class='status " +
+            statusClass +
+            "'>" +
+
+            status +
+
+            "</span>" +
+
+            "</p>" +
+
+
+            "<div class='priority'>" +
+
+            "<b>⭐ Priority:</b> " +
+
+            priority +
+
+            "</div>" +
+
+
+            "<button onclick=\"trackProblem('" +
+            p.id +
+            "')\">" +
+
+            "🔎 Track This Problem" +
+
+            "</button>" +
+
+
+            "</div>";
+
+    }
+
+}
+
+
+/* ============================= */
+/* TRACK PROBLEM */
+/* ============================= */
+
+function trackProblem(problemID) {
+
+
+    window.location.href =
+        "track.html?id=" +
+        encodeURIComponent(problemID);
+
+}
+
+
+/* ============================= */
+/* BACK */
+/* ============================= */
+
+function goBack() {
+
+    window.location.href =
+        "student.html";
+
+}
+
+
+/* ============================= */
+/* START */
+/* ============================= */
+
+window.onload = function() {
+
+    loadHistory();
+
+};
+
+</script>
+
+
+</body>
+</html>

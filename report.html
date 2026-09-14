@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Problem Portal</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #1f4e79;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        header p {
+            margin-bottom: 0;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 650px;
+            margin: 35px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1f4e79;
+        }
+
+        /* FORM */
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* BUTTONS */
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #1f4e79;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #163a5c;
+        }
+
+        .history-button {
+            background: #28a745;
+        }
+
+        .history-button:hover {
+            background: #1e7e34;
+        }
+
+        .track-button {
+            background: #f39c12;
+        }
+
+        .track-button:hover {
+            background: #d68910;
+        }
+
+        /* INFORMATION BOX */
+
+        .info {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eef5ff;
+            border-left: 5px solid #1f4e79;
+            border-radius: 6px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 20px 10px;
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>🎓 Student Problem Portal</h1>
+
+        <p>Report and track your college problems</p>
+
+    </header>
+
+
+    <!-- MAIN CONTAINER -->
+
+    <div class="container">
+
+        <h2>📝 Submit a Problem</h2>
+
+
+        <!-- STUDENT NAME -->
+
+        <label for="studentName">
+            Student Name
+        </label>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter your name"
+        >
+
+
+        <!-- PROBLEM TITLE -->
+
+        <label for="problemTitle">
+            Problem Title
+        </label>
+
+        <input
+            type="text"
+            id="problemTitle"
+            placeholder="Enter problem title"
+        >
+
+
+        <!-- DESCRIPTION -->
+
+        <label for="description">
+            Problem Description
+        </label>
+
+        <textarea
+            id="description"
+            placeholder="Describe your problem clearly"
+        ></textarea>
+
+
+        <!-- SUBMIT -->
+
+        <button onclick="submitProblem()">
+            📤 Submit Problem
+        </button>
+
+
+        <!-- TRACK PROBLEM -->
+
+        <button
+            class="track-button"
+            onclick="window.location.href='track.html'">
+
+            🔎 Track My Problem
+
+        </button>
+
+
+        <!-- HISTORY -->
+
+        <button
+            class="history-button"
+            onclick="window.location.href='history.html'">
+
+            📋 My Problem History
+
+        </button>
+
+
+        <!-- INFORMATION -->
+
+        <div class="info">
+
+            <b>💡 How it works</b>
+
+            <p>
+                1. Submit your problem.
+            </p>
+
+            <p>
+                2. Save the Problem ID shown after submission.
+            </p>
+
+            <p>
+                3. Use "Track My Problem" to check the status.
+            </p>
+
+            <p>
+                4. Use "My Problem History" to view all submitted problems.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Track Problem</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+        }
+
+        h2 {
+            color: #1f4e79;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            box-sizing: border-box;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            background: #1f4e79;
+        }
+
+        .back {
+            background: #6c757d;
+        }
+
+        #result {
+            margin-top: 25px;
+        }
+
+        .problem {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .tracker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        .step {
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #ccc;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            font-weight: bold;
+        }
+
+        .step p {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .active .circle {
+            background: #198754;
+            color: white;
+        }
+
+        .active p {
+            color: #198754;
+        }
+
+        .line {
+            width: 45px;
+            height: 4px;
+            background: #ccc;
+            margin-bottom: 25px;
+            flex-shrink: 0;
+        }
+
+        .green-line {
+            background: #198754;
+        }
+
+        .status-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .reported {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .progress {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .resolved {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .priority {
+            background: #eef5ff;
+            padding: 12px;
+            margin-top: 15px;
+            border-left: 5px solid #1f4e79;
+        }
+
+        .not-found {
+            background: #f8d7da;
+            color: #842029;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>📋 Problem Tracking System</h1>
+
+    <p>Check Your Problem Status</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="box">
+
+        <h2>🔎 Track Your Problem</h2>
+
+        <p>
+            Enter your Problem ID to check the latest status.
+        </p>
+
+
+        <input
+            type="text"
+            id="searchID"
+            placeholder="Example: SCP1234"
+        >
+
+
+        <button onclick="trackProblem()">
+            🔎 Track Problem
+        </button>
+
+
+        <button class="back" onclick="goBack()">
+            ⬅️ Back to Student Portal
+        </button>
+
+
+        <div id="result"></div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* ============================= */
+/* TRACK PROBLEM */
+/* ============================= */
+
+function trackProblem() {
+
+
+    var id =
+        document.getElementById("searchID")
+        .value
+        .trim();
+
+
+    if (id == "") {
+
+        alert("⚠️ Please enter Problem ID.");
+
+        return;
+    }
+
+
+    /* Get latest problems from localStorage */
+
+    var problems =
+        JSON.parse(
+            localStorage.getItem("problems")
+        ) || [];
+
+
+    var found = null;
+
+
+    for (
+        var i = 0;
+        i < problems.length;
+        i++
+    ) {
+
+        if (
+            String(problems[i].id)
+            .toUpperCase()
+            ==
+            id.toUpperCase()
+        ) {
+
+            found = problems[i];
+
+            break;
+        }
+
+    }
+
+
+    /* Problem not found */
+
+    if (found == null) {
+
+        document.getElementById("result").innerHTML =
+
+            "<div class='not-found'>" +
+
+            "<h3>❌ Problem Not Found</h3>" +
+
+            "<p>" +
+            "Please check your Problem ID and try again." +
+            "</p>" +
+
+            "</div>";
+
+        return;
+    }
+
+
+    /* Get current status */
+
+    var status =
+        found.status || "Reported";
+
+
+    var priority =
+        found.priority || "Medium";
+
+
+    /* Timeline */
+
+    var reportedClass = "active";
+
+    var progressClass = "";
+
+    var resolvedClass = "";
+
+
+    var line1 = "";
+
+    var line2 = "";
+
+
+    if (status == "In Progress") {
+
+        progressClass = "active";
+
+        line1 = "green-line";
+
+    }
+
+
+    if (status == "Resolved") {
+
+        progressClass = "active";
+
+        resolvedClass = "active";
+
+        line1 = "green-line";
+
+        line2 = "green-line";
+
+    }
+
+
+    /* Status message */
+
+    var message = "";
+
+    var statusClass = "";
+
+
+    if (status == "Reported") {
+
+        message =
+            "🟡 Your problem has been reported and is waiting for review.";
+
+        statusClass = "reported";
+
+    }
+
+
+    else if (status == "In Progress") {
+
+        message =
+            "🔵 Your problem is currently being worked on.";
+
+        statusClass = "progress";
+
+    }
+
+
+    else if (status == "Resolved") {
+
+        message =
+            "🟢 Your problem has been resolved successfully.";
+
+        statusClass = "resolved";
+
+    }
+
+
+    else {
+
+        message =
+            "Your problem status is: " + status;
+
+        statusClass = "reported";
+
+    }
+
+
+    /* Display result */
+
+    document.getElementById("result").innerHTML =
+
+
+        "<div class='problem'>" +
+
+
+        "<h3>📋 Problem Details</h3>" +
+
+
+        "<p><b>Problem ID:</b> " +
+        found.id +
+        "</p>" +
+
+
+        "<p><b>Student:</b> " +
+        found.name +
+        "</p>" +
+
+
+        "<p><b>Problem Title:</b> " +
+        found.title +
+        "</p>" +
+
+
+        "<p><b>Description:</b> " +
+        found.description +
+        "</p>" +
+
+
+        "<h3>📊 Status Progress</h3>" +
+
+
+        "<div class='tracker'>" +
+
+
+        "<div class='step " +
+        reportedClass +
+        "'>" +
+
+        "<div class='circle'>1</div>" +
+
+        "<p>Reported</p>" +
+
+        "</div>" +
+
+
+        "<div class='line " +
+        line1 +
+        "'></div>" +
+
+
+        "<div class='step " +
+        progressClass +
+        "'>" +
+
+        "<div class='circle'>2</div>" +
+
+        "<p>In Progress</p>" +
+
+        "</div>" +
+
+
+        "<div class='line " +
+        line2 +
+        "'></div>" +
+
+
+        "<div class='step " +
+        resolvedClass +
+        "'>" +
+
+        "<div class='circle'>3</div>" +
+
+        "<p>Resolved</p>" +
+
+        "</div>" +
+
+
+        "</div>" +
+
+
+        "<div class='status-box " +
+        statusClass +
+        "'>" +
+
+        "Current Status: " +
+        status +
+
+        "</div>" +
+
+
+        "<div class='priority'>" +
+
+        "<b>⭐ Priority:</b> " +
+        priority +
+
+        "</div>" +
+
+
+        "<div class='priority'>" +
+
+        "<b>📢 Status Update</b>" +
+
+        "<p>" +
+        message +
+        "</p>" +
+
+        "</div>" +
+
+
+        "</div>";
+
+}
+
+
+/* ============================= */
+/* BACK BUTTON */
+/* ============================= */
+
+function goBack() {
+
+    window.location.href =
+        "student.html";
+
+}
+
+
+/* ============================= */
+/* AUTO LOAD PROBLEM FROM URL */
+/* ============================= */
+
+window.onload = function() {
+
+
+    var params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    var id =
+        params.get("id");
+
+
+    if (id != null && id != "") {
+
+
+        document.getElementById(
+            "searchID"
+        ).value = id;
+
+
+        trackProblem();
+
+    }
+
+};
+
+
+</script>
+
+
+</body>
+</html>

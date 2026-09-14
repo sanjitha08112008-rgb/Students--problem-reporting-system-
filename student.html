@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Student Portal</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 25px auto;
+            padding: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #1f4e79;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #1f4e79;
+            color: white;
+            font-size: 16px;
+        }
+
+        .track {
+            background: #198754;
+        }
+
+        .history {
+            background: #6c757d;
+        }
+
+        .logout {
+            background: #dc3545;
+        }
+
+        .info {
+            background: #eef5ff;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #1f4e79;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🎓 Student Problem Portal</h1>
+
+    <p>Report and Track Your Problems</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- SUBMIT -->
+
+    <div class="box">
+
+        <h2>📝 Submit a Problem</h2>
+
+
+        <label>Student Name</label>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter your name"
+        >
+
+
+        <label>Problem Title</label>
+
+        <input
+            type="text"
+            id="problemTitle"
+            placeholder="Example: Hostel Water Problem"
+        >
+
+
+        <label>Problem Description</label>
+
+        <textarea
+            id="description"
+            placeholder="Explain your problem clearly..."
+        ></textarea>
+
+
+        <button onclick="submitProblem()">
+            📤 Submit Problem
+        </button>
+
+
+        <div class="info">
+
+            <b>💡 Important</b>
+
+            <br><br>
+
+            After submitting, a unique Problem ID
+            will be generated.
+
+            <br>
+
+            Save the ID for tracking.
+
+        </div>
+
+    </div>
+
+
+    <!-- TRACK -->
+
+    <div class="box">
+
+        <h2>🔎 Track Problem</h2>
+
+        <p>
+            Check the latest status of your problem.
+        </p>
+
+        <button
+            class="track"
+            onclick="openTrack()"
+        >
+            🔎 Track My Problem
+        </button>
+
+    </div>
+
+
+    <!-- HISTORY -->
+
+    <div class="box">
+
+        <h2>📋 Problem History</h2>
+
+        <p>
+            View your submitted problems.
+        </p>
+
+        <button
+            class="history"
+            onclick="openHistory()"
+        >
+            📋 View My History
+        </button>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+
+    <div class="box">
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            🚪 Logout
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+function submitProblem() {
+
+
+    var name =
+        document.getElementById("studentName")
+        .value
+        .trim();
+
+
+    var title =
+        document.getElementById("problemTitle")
+        .value
+        .trim();
+
+
+    var description =
+        document.getElementById("description")
+        .value
+        .trim();
+
+
+    if (
+        name == "" ||
+        title == "" ||
+        description == ""
+    ) {
+
+        alert(
+            "⚠️ Please fill all fields."
+        );
+
+        return;
+    }
+
+
+    var problems =
+        JSON.parse(
+            localStorage.getItem("problems")
+        ) || [];
+
+
+    var id;
+
+
+    /* Create a unique ID */
+
+    do {
+
+        id =
+            "SCP" +
+            Math.floor(
+                1000 + Math.random() * 9000
+            );
+
+    } while (
+        problems.some(function(problem) {
+            return problem.id == id;
+        })
+    );
+
+
+    var problem = {
+
+        id: id,
+
+        name: name,
+
+        title: title,
+
+        description: description,
+
+        status: "Reported",
+
+        priority: "Medium"
+
+    };
+
+
+    problems.push(problem);
+
+
+    localStorage.setItem(
+        "problems",
+        JSON.stringify(problems)
+    );
+
+
+    alert(
+        "✅ Problem submitted successfully!\n\n" +
+        "Problem ID: " +
+        id +
+        "\n\nSave this ID."
+    );
+
+
+    document.getElementById(
+        "studentName"
+    ).value = "";
+
+
+    document.getElementById(
+        "problemTitle"
+    ).value = "";
+
+
+    document.getElementById(
+        "description"
+    ).value = "";
+
+}
+
+
+function openTrack() {
+
+    window.location.href =
+        "track.html";
+
+}
+
+
+function openHistory() {
+
+    window.location.href =
+        "history.html";
+
+}
+
+
+function logout() {
+
+    if (
+        confirm("Are you sure you want to logout?")
+    ) {
+
+        window.location.href =
+            "login.html";
+
+    }
+
+}
+
+
+</script>
+
+
+</body>
+</html>
