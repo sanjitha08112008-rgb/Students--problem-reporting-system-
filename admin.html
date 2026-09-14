@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe, #f5f3ff);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 15px;
+        }
+
+        /* Dashboard cards */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 30px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+        .number {
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+        .blue {
+            border-top: 6px solid #2563eb;
+        }
+
+        .blue .number {
+            color: #2563eb;
+        }
+
+        .orange {
+            border-top: 6px solid #f97316;
+        }
+
+        .orange .number {
+            color: #f97316;
+        }
+
+        .green {
+            border-top: 6px solid #16a34a;
+        }
+
+        .green .number {
+            color: #16a34a;
+        }
+
+        /* Complaints section */
+        .complaints {
+            background: white;
+            max-width: 1100px;
+            margin: 10px auto 40px;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .complaints h2 {
+            color: #4f46e5;
+            margin-bottom: 20px;
+        }
+
+        .complaint {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f9fafb;
+        }
+
+        .complaint strong {
+            color: #111827;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .complaints {
+                margin: 10px 20px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🎓 Admin Dashboard</h1>
+        <p>Student Problem Reporting System</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="dashboard">
+
+        <div class="card blue">
+            <div class="icon">📊</div>
+            <h2>Total No. of Problems</h2>
+            <div class="number" id="totalProblems">0</div>
+        </div>
+
+        <div class="card orange">
+            <div class="icon">📝</div>
+            <h2>Total No. of Reported</h2>
+            <div class="number" id="totalReported">0</div>
+        </div>
+
+        <div class="card green">
+            <div class="icon">✅</div>
+            <h2>Total No. of Resolved</h2>
+            <div class="number" id="totalResolved">0</div>
+        </div>
+
+    </div>
+
+    <!-- Complaints -->
+    <div class="complaints">
+        <h2>📋 Student Problems</h2>
+
+        <div id="complaintList">
+            <div class="empty">
+                No problems reported yet.
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function loadProblems() {
+
+            let problems = JSON.parse(
+                localStorage.getItem("problems")
+            ) || [];
+
+            let total = problems.length;
+
+            let reported = problems.filter(function(problem) {
+                return !problem.status ||
+                       problem.status === "Submitted" ||
+                       problem.status === "Reported";
+            }).length;
+
+            let resolved = problems.filter(function(problem) {
+                return problem.status === "Resolved";
+            }).length;
+
+            document.getElementById("totalProblems").textContent = total;
+            document.getElementById("totalReported").textContent = reported;
+            document.getElementById("totalResolved").textContent = resolved;
+
+            let list = document.getElementById("complaintList");
+
+            if (problems.length === 0) {
+                list.innerHTML =
+                    '<div class="empty">No problems reported yet.</div>';
+                return;
+            }
+
+            list.innerHTML = "";
+
+            problems.forEach(function(problem, index) {
+
+                let div = document.createElement("div");
+                div.className = "complaint";
+
+                div.innerHTML = `
+                    <strong>Problem ID:</strong>
+                    ${problem.id || "P" + (index + 1)}
+                    <br><br>
+
+                    <strong>Category:</strong>
+                    ${problem.category || "Not specified"}
+                    <br><br>
+
+                    <strong>Problem:</strong>
+                    ${problem.description || "No description"}
+                    <br>
+
+                    <select id="status${index}">
+                        <option value="Submitted"
+                            ${problem.status === "Submitted" ? "selected" : ""}>
+                            Submitted
+                        </option>
+
+                        <option value="In Progress"
+                            ${problem.status === "In Progress" ? "selected" : ""}>
+                            In Progress
+                        </option>
+
+                        <option value="Resolved"
+                            ${problem.status === "Resolved" ? "selected" : ""}>
+                            Resolved
+                        </option>
+                    </select>
+
+                    <button onclick="updateStatus(${index})">
+                        Update Status
+                    </button>
+                `;
+
+                list.appendChild(div);
+            });
+        }
+
+
+        function updateStatus(index) {
+
+            let problems = JSON.parse(
+                localStorage.getItem("problems")
+            ) || [];
+
+            let newStatus =
+                document.getElementById("status" + index).value;
+
+            problems[index].status = newStatus;
+
+            localStorage.setItem(
+                "problems",
+                JSON.stringify(problems)
+            );
+
+            alert("Status updated successfully!");
+
+            loadProblems();
+        }
+
+
+        loadProblems();
+
+    </script>
+
+</body>
+</html>
