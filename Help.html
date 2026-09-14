@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Student Problem Reporting System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #f3e8ff, #fce7f3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .step {
+            padding: 20px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+            border-left: 5px solid #6366f1;
+        }
+
+        .step h3 {
+            color: #7c3aed;
+            margin-bottom: 8px;
+        }
+
+        .faq {
+            padding: 15px;
+            margin: 10px 0;
+            background: #fdf2f8;
+            border-radius: 12px;
+        }
+
+        .faq strong {
+            color: #db2777;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #ecfdf5, #dbeafe);
+            text-align: center;
+        }
+
+        .contact p {
+            margin: 8px;
+        }
+
+        .back {
+            display: block;
+            width: fit-content;
+            margin: 25px auto;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 700px) {
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>❓ Help Center</h1>
+        <p>Student Problem Reporting System</p>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>📌 How to Report a Problem?</h2>
+
+            <div class="steps">
+
+                <div class="step">
+                    <h3>1️⃣ Login</h3>
+                    <p>Login to the system using your student account.</p>
+                </div>
+
+                <div class="step">
+                    <h3>2️⃣ Select Category</h3>
+                    <p>Select the category related to your problem.</p>
+                </div>
+
+                <div class="step">
+                    <h3>3️⃣ Describe Problem</h3>
+                    <p>Enter a clear description of your problem.</p>
+                </div>
+
+                <div class="step">
+                    <h3>4️⃣ Submit</h3>
+                    <p>Click the Submit button to report your problem.</p>
+                </div>
+
+                <div class="step">
+                    <h3>5️⃣ Get Problem ID</h3>
+                    <p>A unique Problem ID will be generated.</p>
+                </div>
+
+                <div class="step">
+                    <h3>6️⃣ Track Status</h3>
+                    <p>Use the Track Problem option to check the status.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>❔ Frequently Asked Questions</h2>
+
+            <div class="faq">
+                <strong>Q: How do I report a complaint?</strong>
+                <p>Login → Report Problem → Select Category → Describe → Submit.</p>
+            </div>
+
+            <div class="faq">
+                <strong>Q: How can I check my complaint?</strong>
+                <p>Open Track Problem and check your Problem ID and status.</p>
+            </div>
+
+            <div class="faq">
+                <strong>Q: What are the complaint statuses?</strong>
+                <p>Submitted, In Progress, and Resolved.</p>
+            </div>
+
+            <div class="faq">
+                <strong>Q: What if my problem is not solved?</strong>
+                <p>You can contact the concerned college administration.</p>
+            </div>
+        </div>
+
+        <div class="card contact">
+            <h2>📞 Need More Help?</h2>
+            <p>🏫 Contact your college administration.</p>
+            <p>📧 Email: support@college.edu</p>
+            <p>🕐 Support Hours: 9:00 AM - 5:00 PM</p>
+        </div>
+
+        <a href="index.html" class="back">🏠 Back to Home</a>
+
+    </div>
+
+</body>
+</html>
